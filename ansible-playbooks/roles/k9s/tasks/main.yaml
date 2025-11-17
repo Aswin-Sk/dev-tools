@@ -1,0 +1,35 @@
+- name: Detect OS
+  set_fact:
+    is_linux: "{{ ansible_facts['os_family'] in ['Debian', 'RedHat', 'Suse', 'Archlinux'] }}"
+    is_macos: "{{ ansible_facts['os_family'] == 'Darwin' }}"
+    is_windows: "{{ ansible_facts['os_family'] == 'Windows'] }}"
+
+- name: Install K9s on Linux
+  package:
+    name: k9s
+    state: present
+  when: is_linux
+
+- name: Install Homebrew on macOS if not present
+  command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  args:
+    creates: /usr/local/bin/brew
+  when: is_macos
+
+- name: Install K9s on macOS
+  homebrew:
+    name: k9s
+    state: present
+  when: is_macos
+
+- name: Download K9s for Windows
+  win_get_url:
+    url: "{{ k9s_windows_url }}"
+    dest: "{{ k9s_windows_dest }}"
+  when: is_windows
+
+- name: Extract K9s on Windows
+  win_unzip:
+    src: "{{ k9s_windows_dest }}"
+    dest: "{{ k9s_windows_extract }}"
+  when: is_windows
