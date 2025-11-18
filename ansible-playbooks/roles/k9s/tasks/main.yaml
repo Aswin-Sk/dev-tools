@@ -2,12 +2,31 @@
   set_fact:
     is_linux: "{{ ansible_facts['os_family'] in ['Debian', 'RedHat', 'Suse', 'Archlinux'] }}"
     is_macos: "{{ ansible_facts['os_family'] == 'Darwin' }}"
-    is_windows: "{{ ansible_facts['os_family'] == 'Windows'] }}"
+    is_windows: "{{ ansible_facts['os_family'] == 'Windows' }}"
 
-- name: Install K9s on Linux
-  package:
-    name: k9s
-    state: present
+- name: Download K9s binary
+  get_url:
+    url: "https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_amd64.tar.gz"
+    dest: /tmp/k9s.tar.gz
+  when: is_linux
+  
+- name: Extract k9s
+  unarchive:
+    src: /tmp/k9s.tar.gz
+    dest: /tmp/
+    remote_src: yes
+  when: is_linux
+
+- name: Move binary to /usr/local/bin
+  command: mv /tmp/k9s /usr/local/bin/k9s
+  args:
+    creates: /usr/local/bin/k9s
+  when: is_linux
+
+- name: Ensure k9s is executable
+  file:
+    path: /usr/local/bin/k9s
+    mode: '0755'
   when: is_linux
 
 - name: Install Homebrew on macOS if not present
