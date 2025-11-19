@@ -1,0 +1,15 @@
+- name: Warn user about WSL world-writable mounts
+  debug:
+    msg: "WSL filesystem (/mnt/c) is world-writable; do not install system binaries here."
+
+- name: Install dev tools for WSL (Debian/Ubuntu usually)
+  apt:
+    name:
+      - build-essential
+      - git
+      - python3
+      - docker-registry
+      - pip3
+      - postman
+    state: present
+    update_cache: yes

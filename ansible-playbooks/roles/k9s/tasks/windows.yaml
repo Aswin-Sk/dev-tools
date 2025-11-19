@@ -1,0 +1,11 @@
+- name: Download K9s for Windows
+  win_get_url:
+    url: "{{ k9s_windows_url }}"
+    dest: "{{ k9s_windows_dest }}"
+  when: is_windows
+
+- name: Extract K9s on Windows
+  win_unzip:
+    src: "{{ k9s_windows_dest }}"
+    dest: "{{ k9s_windows_extract }}"
+  when: is_windows

@@ -1,5 +1,6 @@
-- name: Install K9s on all environments
+- name: Install dev tools across all OS
   hosts: all
   become: yes
   roles:
+    - general-dev-tools
     - k9s

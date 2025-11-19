@@ -1,0 +1,10 @@
+- name: Install general dev tools for linux
+  package:
+    name:
+      - git
+      - curl
+      - vim
+      - python3
+      - build-essential
+      - docker-registry
+    state: present
