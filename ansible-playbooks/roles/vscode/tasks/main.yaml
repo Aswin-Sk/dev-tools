@@ -1,10 +1,8 @@
+# roles/devtools/tasks/main.yml
+
 - name: Identify OS family
   debug:
     msg: "Detected OS: {{ ansible_facts['os_family'] }} / {{ ansible_facts['distribution'] }}"
-
-- name: Include WSL tasks
-  include_tasks: wsl.yaml
-  when: ansible_virtualization_type == "wsl"
 
 - name: Include Linux tasks
   include_tasks: linux.yaml

@@ -1,0 +1,19 @@
+# roles/devtools/tasks/macos.yml
+- name: Install Homebrew (if missing)
+  community.general.homebrew:
+    name: git
+    state: present
+
+- name: Install base tools
+  community.general.homebrew:
+    name:
+      - git
+      - wget
+      - make
+      - cmake
+      - python3
+      - vim
+      - docker.io 
+      - docker-registry
+      - postman
+    state: present

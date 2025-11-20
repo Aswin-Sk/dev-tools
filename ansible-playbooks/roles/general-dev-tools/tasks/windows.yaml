@@ -1,0 +1,13 @@
+# roles/devtools/tasks/windows.yml
+- name: Install dev tools on Windows
+  win_chocolatey:
+    name:
+      - git
+      - vscode
+      - make
+      - vim
+      - python3
+      - docker-desktop
+      - docker-registry
+      - postman
+    state: present

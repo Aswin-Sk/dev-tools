@@ -1,0 +1,6 @@
+# roles/devtools/tasks/wsl.yml
+
+- name: Warn user about WSL world-writable mounts
+  debug:
+    msg: "WSL filesystem (/mnt/c) is world-writable; do not install system binaries here."
+

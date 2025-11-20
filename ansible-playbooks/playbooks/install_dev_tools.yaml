@@ -4,3 +4,4 @@
   roles:
     - general-dev-tools
     - k9s
+    - vscode
