@@ -1,0 +1,20 @@
+- name: Identify OS family
+  debug:
+    msg: "Detected OS: {{ ansible_facts['os_family'] }} / {{ ansible_facts['distribution'] }}"
+
+- name: Include WSL tasks
+  include_tasks: wsl.yaml
+  when: ansible_virtualization_type == "wsl"
+
+- name: Include Linux tasks
+  include_tasks: linux.yaml
+  when: ansible_facts['os_family'] in ['Debian', 'RedHat', 'Archlinux']
+
+- name: Include macOS tasks
+  include_tasks: macos.yaml
+  when: ansible_facts['os_family'] == "Darwin"
+
+- name: Include Windows tasks
+  include_tasks: windows.yaml
+  when: ansible_facts['os_family'] == "Windows"
+

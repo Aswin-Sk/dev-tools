@@ -1,0 +1,17 @@
+- name: Install Oh My Posh
+  win_command: winget install JanDeDobbeleer.OhMyPosh -h --accept-package-agreements --accept-source-agreements
+
+- name: Create PowerShell config directory
+  win_file:
+    path: "{{ ansible_env.USERPROFILE }}\\Documents\\PowerShell"
+    state: directory
+
+- name: Install Nerd Font (Meslo)
+  win_command: |
+    powershell -Command "irm https://ohmyposh.dev/install/fonts.ps1 | iex"
+
+- name: Configure PowerShell profile
+  win_copy:
+    dest: "{{ ansible_env.USERPROFILE }}\\Documents\\PowerShell\\Microsoft.PowerShell_profile.ps1"
+    content: |
+      oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\powerlevel10k_rainbow.omp.json" | Invoke-Expression

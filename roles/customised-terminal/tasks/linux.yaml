@@ -1,0 +1,36 @@
+- name: Install Zsh
+  package:
+    name: zsh
+    state: present
+
+- name: Install Git
+  package:
+    name: git
+    state: present
+
+- name: Clone Powerlevel10k
+  git:
+    repo: "https://github.com/romkatv/powerlevel10k.git"
+    dest: "{{ ansible_env.HOME }}/.powerlevel10k"
+
+- name: Install Oh My Zsh
+  shell: |
+    RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  args:
+    creates: "{{ ansible_env.HOME }}/.oh-my-zsh"
+
+- name: Configure .zshrc
+  copy:
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+    content: |
+      export ZSH="$HOME/.oh-my-zsh"
+      ZSH_THEME="powerlevel10k/powerlevel10k"
+      plugins=(git)
+      source $ZSH/oh-my-zsh.sh
+      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+- name: Set Zsh as default shell
+  user:
+    name: "{{ ansible_facts['user_id'] }}"
+    shell: /usr/bin/zsh
+  become: true
